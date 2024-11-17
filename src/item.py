@@ -1,5 +1,6 @@
 import csv
 import os
+from pathlib import Path
 
 
 class Item:
@@ -48,19 +49,18 @@ class Item:
             self.__name = name
 
     @classmethod
-    def instantiate_from_csv(cls):
-        items = []
-        path = os.path.join('..','src','items.csv')
+    def instantiate_from_csv(cls, filepath):
+        root_path = Path(__file__).parent.parent
+        path = os.path.join(root_path, filepath)
         with open(path, newline='', encoding='ISO-8859-1') as csvfile:
             reader = csv.DictReader(csvfile)
 
             for line in reader:
-               items.append(Item(line['name'], Item.string_to_number(line['price']), Item.string_to_number(line['quantity'])))
+                if len(line) != 0:
+                   Item(line['name'], Item.string_to_number(line['price']), Item.string_to_number(line['quantity']))
 
-        return items
 
     @staticmethod
     def string_to_number(s: str):
-        if s.isnumeric():
-            return int(s)
-        return 0
+        return int(float(s))
+
