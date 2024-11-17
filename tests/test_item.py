@@ -22,20 +22,21 @@ def test_apply_discount(get_item):
 
 
 def test_string_to_number():
-    assert Item.string_to_number('500') == 500
-    assert Item.string_to_number('') == 0
-    assert Item.string_to_number('sgsgd') == 0
+    assert Item.string_to_number('5') == 5
+    assert Item.string_to_number('5.0') == 5
+    assert Item.string_to_number('5.5') == 5
 
 
 def test_instance_from_csv():
-    items = Item.instantiate_from_csv()
+    Item.all.clear()
+    Item.instantiate_from_csv('src\items.csv')
 
-    assert items[0].price == 100
-    assert items[1].price == 1000
-    assert items[2].price == 10
+    assert Item.all[0].price == 100
+    assert Item.all[1].price == 1000
+    assert Item.all[2].price == 10
 
-    assert items[0].quantity == 1
-    assert (items[1].quantity== 3)
-    assert items[2].quantity == 5
+    assert Item.all[0].quantity == 1
+    assert Item.all[1].quantity == 3
+    assert Item.all[2].quantity == 5
 
 
