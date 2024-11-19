@@ -39,4 +39,8 @@ def test_instance_from_csv():
     assert Item.all[1].quantity == 3
     assert Item.all[2].quantity == 5
 
+def test_repr(get_item):
+    assert repr(get_item) == "Item('Ноутбук', 15000, 21)"
 
+def test_str(get_item):
+    assert str(get_item) == 'Ноутбук'
