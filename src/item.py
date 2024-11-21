@@ -32,6 +32,7 @@ class Item:
     def __add__(self, other):
         if issubclass(other.__class__, self.__class__):
             return other.quantity + self.quantity
+        raise TypeError
 
     def calculate_total_price(self) -> float:
         """
@@ -45,7 +46,7 @@ class Item:
         """
         Применяет установленную скидку для конкретного товара.
         """
-        self.price = self.price * Item.pay_rate
+        self.price = self.price * self.__class__.pay_rate
 
     @property
     def name(self):

@@ -1,4 +1,6 @@
 """Здесь надо написать тесты с использованием pytest для модуля item."""
+import pytest
+
 from src.item import Item
 
 
@@ -44,3 +46,9 @@ def test_repr(get_item):
 
 def test_str(get_item):
     assert str(get_item) == 'Ноутбук'
+
+def test_add(get_item):
+    assert get_item + get_item == get_item.quantity + get_item.quantity
+
+    with pytest.raises(TypeError):
+         get_item + 50
