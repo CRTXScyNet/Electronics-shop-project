@@ -2,6 +2,8 @@ import csv
 import os
 from pathlib import Path
 
+from src.instantiate_csv_error import InstantiateCSVError
+
 
 class Item:
     """
@@ -60,15 +62,22 @@ class Item:
             self.__name = name
 
     @classmethod
-    def instantiate_from_csv(cls, filepath):
+    def instantiate_from_csv(cls, filepath='src/items.csv'):
         root_path = Path(__file__).parent.parent
         path = os.path.join(root_path, filepath)
-        with open(path, newline='', encoding='ISO-8859-1') as csvfile:
+        if not os.path.exists(path):
+            raise FileNotFoundError(f'Отсутствует файл {filepath}')
+        with (open(path, newline='', encoding='ISO-8859-1') as csvfile):
             reader = csv.DictReader(csvfile)
 
             for line in reader:
                 if len(line) != 0:
-                   Item(line['name'], Item.string_to_number(line['price']), Item.string_to_number(line['quantity']))
+                    if (len(line) != 3 or line['name'] is None
+                            or line['price'] is None
+                            or line['quantity'] is None):
+                        raise InstantiateCSVError(filepath)
+                    Item(line['name'], Item.string_to_number(line['price']), Item.string_to_number(line['quantity']))
+
 
 
     @staticmethod

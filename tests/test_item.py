@@ -1,6 +1,7 @@
 """Здесь надо написать тесты с использованием pytest для модуля item."""
 import pytest
 
+from src.instantiate_csv_error import InstantiateCSVError
 from src.item import Item
 
 
@@ -40,6 +41,12 @@ def test_instance_from_csv():
     assert Item.all[0].quantity == 1
     assert Item.all[1].quantity == 3
     assert Item.all[2].quantity == 5
+
+    with pytest.raises(FileNotFoundError):
+        Item.instantiate_from_csv('sdfas')
+
+    with pytest.raises(InstantiateCSVError):
+        Item.instantiate_from_csv('src/itemsss.csv')
 
 def test_repr(get_item):
     assert repr(get_item) == "Item('Ноутбук', 15000, 21)"
